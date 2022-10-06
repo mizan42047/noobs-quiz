@@ -1,0 +1,19 @@
+{
+    "name": "noobsplugin/noobsquiz",
+    "description": "Add quiz functionality in your website",
+    "type": "wordpress-plugin",
+    "license": "GPLV2",
+    "autoload": {
+        "psr-4": {
+            "Noobsplugin\\Noobsquiz\\": "includes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mijanur Rahman",
+            "email": "96003491+mijan-xs@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

@@ -1,0 +1,17 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "noobs-quiz/question-meta",
+	"version": "1.0.0",
+	"title": "Question Meta",
+	"category": "text",
+	"icon": "info-outline",
+	"description": "It will help you to add Question Answer, Question Mark and Question Options",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "noobs-quiz",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

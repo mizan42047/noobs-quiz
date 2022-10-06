@@ -1,0 +1,46 @@
+//Main Wrappper of the Question Meta
+.wp-block-noobs-quiz-question-meta{
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+ }
+
+ //Wrapper of the quiz repeater
+ .noobs-quiz__repeater{
+	.noobs-quiz__repeater--fields{
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 20px;
+
+		.components-base-control{
+			flex-basis: 95%;
+		}
+		//Repeater Input
+		input{
+			height: 100%;
+			padding: 10px 8px;
+		}
+		//Repeater Button
+		.components-button{
+			transform: translateY(10px);
+		}
+	}
+	//List wrapper of the options
+	.noobs-quiz__repeater--list{
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		//individual item of the option
+		li{
+			background-color: rgb(240, 240, 240);
+			padding: 5px 10px;
+			display: flex;
+			justify-content: space-between;
+			
+			&:not(:last-child){
+				margin-bottom: 5px;
+			}
+		}
+	}
+ }
