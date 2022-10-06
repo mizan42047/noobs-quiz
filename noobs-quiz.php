@@ -16,6 +16,7 @@
 
 use Noobsplugin\Noobsquiz\Assets;
 use \Noobsplugin\Noobsquiz\Question;
+use Noobsplugin\Noobsquiz\Widgets;
 
 if (!defined("ABSPATH")) exit;
 //Required autoload file
@@ -115,6 +116,8 @@ class NoobsQuiz
 		$question->init_classes();
 		$assets = new Assets();
 		$assets->init();
+		$widgets = new Widgets();
+		$widgets->init();
 	}
 
 }
