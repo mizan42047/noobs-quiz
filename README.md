@@ -1,1 +1,0 @@
-# noobs-quiz
