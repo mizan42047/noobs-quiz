@@ -1,13 +1,18 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps } from '@wordpress/block-editor';
-import { TextControl, Button, __experimentalNumberControl as NumberControl, Icon } from '@wordpress/components';
+import { TextControl, Button, __experimentalNumberControl as NumberControl, Icon, Notice } from '@wordpress/components';
 import { useEntityProp } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
 import { useState } from "@wordpress/element";
 import './editor.scss';
 
 export default function Edit() {
 	const blockProps = useBlockProps();
-	const [meta, setMeta] = useEntityProp('postType', 'question', 'meta');
+	const postType = useSelect(
+		(select) => select('core/editor').getCurrentPostType(),
+		[]
+	);
+	const [meta, setMeta] = useEntityProp('postType', postType, 'meta');
 	const [optionInput, setOptionInput] = useState("");
 	const [removeItem, setRemoveItem] = useState("");
 	//Registered meta from PHP
@@ -29,59 +34,67 @@ export default function Edit() {
 	}
 	//Remove option to on click and index come from on focus
 	const handleRemoveOptions = () => {
-		const newOptions = options.filter((value,index) => {
+		const newOptions = options.filter((value, index) => {
 			return index !== removeItem;
 		})
 
 		setMeta({ ...meta, noobs_quiz_question_options: newOptions })
 	}
 	/* JSX for Question Meta */
-	return (
-		<div {...blockProps}>
-			<TextControl
-				label={__("Question Answer")}
-				value={answer}
-				onChange={updateAnswer}
-				placeholder="Please Write Your Question Answer"
-			/>
+	if (postType === "question") {
+		return (
+			<div {...blockProps}>
+				<TextControl
+					label={__("Question Answer")}
+					value={answer}
+					onChange={updateAnswer}
+					placeholder="Please Write Your Question Answer"
+				/>
 
-			<NumberControl
-				label={__("Question Mark")}
-				value={mark}
-				onChange={updateMark}
-				placeholder="Please Write Your Question Mark"
-			/>
+				<NumberControl
+					label={__("Question Mark")}
+					value={mark}
+					onChange={updateMark}
+					placeholder="Please Write Your Question Mark"
+				/>
 
-			<div className="noobs-quiz__repeater">
-				<div className="noobs-quiz__repeater--fields">
-					<TextControl
-						label={__("Question Options")}
-						value={optionInput}
-						onChange={(newValue)=> setOptionInput(newValue)}
-						placeholder="Please Write Your Question Options"
-					/>
-					<Button
-						variant="primary"
-						icon={<Icon icon="plus" />}
-						onClick= {handleAddOptions}
-					/>
+				<div className="noobs-quiz__repeater">
+					<div className="noobs-quiz__repeater--fields">
+						<TextControl
+							label={__("Question Options")}
+							value={optionInput}
+							onChange={(newValue) => setOptionInput(newValue)}
+							placeholder="Please Write Your Question Options"
+						/>
+						<Button
+							variant="primary"
+							icon={<Icon icon="plus" />}
+							onClick={handleAddOptions}
+						/>
+					</div>
+					<ul className="noobs-quiz__repeater--list">
+						{
+							options?.map((value, index) => (
+								<li key={index + 1}>{value}
+									<Button
+										key={index}
+										variant='secondary'
+										icon={<Icon icon="no-alt" />}
+										onClick={handleRemoveOptions}
+										onFocus={() => { setRemoveItem(index) }}
+									/>
+								</li>
+							))
+						}
+					</ul>
 				</div>
-				<ul className="noobs-quiz__repeater--list">
-					{
-						options?.map((value,index)=>(
-							<li key={index + 1}>{value}
-								<Button
-								key={index}
-								variant= 'secondary'
-								icon={<Icon icon="no-alt"/>}
-								onClick={handleRemoveOptions}
-								onFocus = {()=>{setRemoveItem(index)}}
-								/>
-							</li>
-						))
-					}
-				</ul>
 			</div>
-		</div>
-	);
+		);
+	}else{
+		return(
+			<Notice status="warning" isDismissible={false}>
+				Sorry! This Meta is not for {postType}
+			</Notice>
+		)
+	}
 }
