@@ -93,7 +93,7 @@ class QuestionPostType
 			"query_var" => true,
 			"menu_icon" => "dashicons-info",
 			"supports" => ["title", "editor", "custom-fields"],
-			"taxonomies" => ["category"],
+			"taxonomies" => ["question_category"],
 			"show_in_graphql" => false,
 		];
 

@@ -2,6 +2,7 @@
 namespace Noobsplugin\Noobsquiz;
 
 use Noobsplugin\Noobsquiz\Question\QuestionMetaBox;
+use Noobsplugin\Noobsquiz\Question\QuestionTaxonomy;
 
 /**
  * Question class
@@ -31,6 +32,8 @@ class Question{
 		new Question\QuestionPostType();
 		$metabox = new QuestionMetaBox();
 		$metabox->init();
+		$taxonomy = new QuestionTaxonomy();
+		$taxonomy->init();
 	}
 
 }

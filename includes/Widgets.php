@@ -28,6 +28,7 @@ class Widgets{
 		add_action( 'elementor/widgets/register', [ $this, 'noobs_quiz_register_widgets' ] );
 	 }
 
+	 //Register elementor widget
 	 public function noobs_quiz_register_widgets($widgets_manager)
 	 {
 		$widgets_manager->register( new NoobsQuizWidget() );
