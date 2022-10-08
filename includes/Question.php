@@ -4,6 +4,7 @@ namespace Noobsplugin\Noobsquiz;
 use Noobsplugin\Noobsquiz\Question\QuestionMetaBox;
 use Noobsplugin\Noobsquiz\Question\QuestionTaxonomy;
 
+defined('ABSPATH') || exit;
 /**
  * Question class
  * Organize the other question related classes

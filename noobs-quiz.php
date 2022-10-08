@@ -18,7 +18,7 @@ use Noobsplugin\Noobsquiz\Assets;
 use \Noobsplugin\Noobsquiz\Question;
 use Noobsplugin\Noobsquiz\Widgets;
 
-if (!defined("ABSPATH")) exit;
+defined('ABSPATH') || exit;
 //Required autoload file
 require_once __DIR__. "/vendor/autoload.php";
 

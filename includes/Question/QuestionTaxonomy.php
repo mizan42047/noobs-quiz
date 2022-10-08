@@ -1,6 +1,6 @@
 <?php
 namespace Noobsplugin\Noobsquiz\Question;
-
+defined('ABSPATH') || exit;
 /**
  * QuestionTaxonomy
  * It's handle custom taxonomy for question 
