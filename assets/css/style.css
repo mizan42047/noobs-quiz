@@ -1,0 +1,21 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body{
+	box-sizing: inherit;
+}
+
+.noobs-quiz-content-title,
+.noobs-quiz-content-desc
+{
+	transition: all .3s ease-in-out;
+}
+
+.noobs-quiz-options-wrapper{
+	display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}

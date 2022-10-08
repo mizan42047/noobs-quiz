@@ -2,7 +2,7 @@
 namespace Noobsplugin\Noobsquiz;
 
 use Noobsplugin\Noobsquiz\Widgets\NoobsQuizWidget;
-
+defined('ABSPATH') || exit;
 /**
  * Widgets class
  * widgets class will organize all custom elementor widgets file
