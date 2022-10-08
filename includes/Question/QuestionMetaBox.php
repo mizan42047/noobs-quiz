@@ -2,7 +2,7 @@
 
 namespace Noobsplugin\Noobsquiz\Question;
 
-if (!defined("ABSPATH")) exit;
+defined('ABSPATH') || exit;
 /**
  * QuestionMetaBox class.
  * It's handle queston post type custom meta.

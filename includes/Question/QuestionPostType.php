@@ -1,7 +1,7 @@
 <?php
 
 namespace Noobsplugin\Noobsquiz\Question;
-
+defined('ABSPATH') || exit;
 /**
  * Question post type class
  * It will register qustion post type and handle question
