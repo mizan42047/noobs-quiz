@@ -60,6 +60,7 @@ class NoobsQuizWidget extends Widget_Base
 	public function get_script_depends()
 	{
 		return [
+			'sweet-alert',
 			'widget-scripts'
 		];
 	}
@@ -107,6 +108,28 @@ class NoobsQuizWidget extends Widget_Base
 		}
 		wp_reset_postdata();
 		return $question_list;
+	}
+
+	/**
+	 * get_pages
+	 * fetch page id and title
+	 * @return Array $page_list
+	 * @since 1.0.0
+	 * @author Mijanur Rahman
+	 */
+	public function get_pages()
+	{
+		$pages = get_posts([
+			'post_type' => 'page',
+			'posts_per_page'   => -1
+		]);
+
+		$page_list = [];
+		foreach ($pages as $page) {
+			$page_list[$page->guid] = esc_html__(wp_trim_words($page->post_title, 10), 'noobs-quiz');
+		}
+
+		return $page_list;
 	}
 
 	protected function register_controls()
@@ -222,6 +245,17 @@ class NoobsQuizWidget extends Widget_Base
 		);
 
 		$this->add_control(
+			'noobs_quiz_answer_page',
+			[
+				'label' => esc_html__('Answer Page', 'noobs-quiz'),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'description' => 'redirect user to the answer page if not select any page it will be home page',
+				'default' => '',
+				'options' => $this->get_pages(),
+			]
+		);
+
+		$this->add_control(
 			'noob_quiz_hide_title',
 			[
 				'label'        => esc_html__('Hide Question Title?', 'noobs-quiz'),
@@ -296,7 +330,7 @@ class NoobsQuizWidget extends Widget_Base
 			\Elementor\Group_Control_Border::get_type(),
 			[
 				'name' => 'noob_quiz_wrapper_border',
-				'label' => esc_html__( 'Border', 'noobs-quiz' ),
+				'label' => esc_html__('Border', 'noobs-quiz'),
 				'selector' => '{{WRAPPER}} .noobs-quiz .noobs-quiz-content',
 			]
 		);
@@ -856,6 +890,40 @@ class NoobsQuizWidget extends Widget_Base
 
 		$this->end_controls_tab(); //End of hover tab
 
+		//Start active tab
+		$this->start_controls_tab(
+			'noob_quiz_options_color_tab_active',
+			[
+				'label' => esc_html__('Active', 'noobs-quiz'),
+			]
+		);
+
+		$this->add_control(
+			'noob_quiz_options_color_active',
+			[
+				'label' => esc_html__('Color', 'noobs-quiz'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'default' => '#FFFFFF',
+				'selectors' => [
+					'{{WRAPPER}} .noobs-quiz .noobs-quiz-content  .noobs-quiz-options.active' => 'color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->add_control(
+			'noob_quiz_options_background_color_active',
+			[
+				'label' => esc_html__('Background Color', 'noobs-quiz'),
+				'type' => \Elementor\Controls_Manager::COLOR,
+				'default' => '#000000',
+				'selectors' => [
+					'{{WRAPPER}} .noobs-quiz .noobs-quiz-content  .noobs-quiz-options.active' => 'background-color: {{VALUE}}',
+				],
+			]
+		);
+
+		$this->end_controls_tab(); // End of Active tab
+
 		$this->end_controls_tabs(); //Tab wrapper end
 
 		$this->add_group_control(
@@ -887,9 +955,9 @@ class NoobsQuizWidget extends Widget_Base
 		$this->add_control(
 			'noob_quiz_options_gap',
 			[
-				'label' => esc_html__( 'Space Between (px)', 'noobs-quiz' ),
+				'label' => esc_html__('Space Between (px)', 'noobs-quiz'),
 				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ 'px' ],
+				'size_units' => ['px'],
 				'separator'  => 'before',
 				'range' => [
 					'px' => [
@@ -911,9 +979,9 @@ class NoobsQuizWidget extends Widget_Base
 		$this->add_control(
 			'noob_quiz_options_width',
 			[
-				'label' => esc_html__( 'Item Width (%)', 'noobs-quiz' ),
+				'label' => esc_html__('Item Width (%)', 'noobs-quiz'),
 				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ '%' ],
+				'size_units' => ['%'],
 				'range' => [
 					'px' => [
 						'min' => 0,
@@ -934,9 +1002,9 @@ class NoobsQuizWidget extends Widget_Base
 		$this->add_control(
 			'noob_quiz_options_border_radius',
 			[
-				'label' => esc_html__( 'Border Radius', 'noobs-quiz' ),
+				'label' => esc_html__('Border Radius', 'noobs-quiz'),
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'default'    => [
 					'top'    => 10,
 					'right'  => 10,
@@ -949,13 +1017,13 @@ class NoobsQuizWidget extends Widget_Base
 				],
 			]
 		);
-		
+
 		$this->add_control(
 			'noob_quiz_options_padding',
 			[
-				'label' => esc_html__( 'Item Padding', 'noobs-quiz' ),
+				'label' => esc_html__('Item Padding', 'noobs-quiz'),
 				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => ['px', '%'],
 				'default'    => [
 					'top'    => 0,
 					'right'  => 8,
@@ -1010,46 +1078,69 @@ class NoobsQuizWidget extends Widget_Base
 		$args['order'] = !empty($noobs_quiz_order) ? $noobs_quiz_order : '';
 
 		//Handle post per page
-		$args['posts_per_page'] = !empty($noobs_quiz_posts_per_page) ? $noobs_quiz_posts_per_page : 1;
+		$args['posts_per_page'] = !empty($noobs_quiz_posts_per_page) ? $noobs_quiz_posts_per_page : -1;
 
 		$query = new WP_Query($args); //query for quertion post type
-
+		$user_uniqid = uniqid();
+		$email_uniqid = uniqid();
 		if ($query->have_posts()) : ?>
-			<div class="noobs-quiz">
-				<div class="noobs-quiz-content">
-					<!-- Form start -->
-					<form action="" method="post">
+			<form action="#" method="POST" id="noobs-quiz-question-form">
+				<div class="noobs-quiz swiper">
+					<div class="noobs-quiz-content swiper-wrapper">
+						<div class="swiper-slide noobs-quiz-loop-content">
+							<div class="noobs-quiz-username">
+								<label for="<?php echo esc_attr($user_uniqid); ?>"><?php esc_html_e("Username", "noobs-quiz"); ?></label>
+								<input type="text" id="<?php echo esc_attr($user_uniqid); ?>" name="noobs-quiz-username">
+							</div>
+							<div class="noobs-quiz-email">
+								<label for="<?php echo esc_attr($email_uniqid); ?>"><?php esc_html_e("Email(Optional)", "noobs-quiz"); ?></label>
+								<input type="text" id="<?php echo esc_attr($email_uniqid); ?>" name="noobs-quiz-email">
+							</div>
+						</div>
+						<button type="button" class="form-entry-button"><?php esc_html_e("Form Entry", "noobs-quiz"); ?></button>
 						<?php
 						while ($query->have_posts()) :
 							$query->the_post(); ?>
-							<?php if (get_the_title()) : ?>
-								<h2 class="noobs-quiz-content-title"><?php the_title(); ?></h2>
-							<?php endif; ?>
-
-							<?php if ($noob_quiz_hide_description !== "yes") : ?>
-								<p class="noobs-quiz-content-desc">
-									<?php esc_html_e(wp_strip_all_tags(get_the_content()), "noobs-quiz"); ?>
-								</p>
-							<?php endif; ?>
-							<div class="noobs-quiz-options-wrapper">
-								<?php
-								$options_meta = get_post_meta(get_the_ID(), "noobs_quiz_question_options", true);
-								$options = !empty($options_meta) ? $options_meta : [];
-								$uniq = uniqid();
-								foreach ($options as $key => $option) : ?>
-									<div class="noobs-quiz-options">
-										<input name="noobs-quiz-<?php echo esc_attr(get_the_ID()); ?>" type="radio" id="<?php echo esc_attr($uniq . $key); ?>" value="<?php esc_attr_e($option, "noobs-quiz") ?>">
-										<label for="<?php echo esc_attr($uniq . $key); ?>">
-											<?php esc_html_e($option, 'noobs-quiz');  ?>
-										</label>
-									</div>
-								<?php endforeach; ?>
+							<div class="swiper-slide noobs-quiz-loop-content">
+								<!-- Title markup -->
+								<?php if (!empty(get_the_title())) : ?>
+									<h2 class="noobs-quiz-content-title"><?php the_title(); ?></h2>
+								<?php endif; ?>
+								<!-- Description Markup -->
+								<?php if ($noob_quiz_hide_description !== "yes") : ?>
+									<p class="noobs-quiz-content-desc">
+										<?php esc_html_e(wp_strip_all_tags(get_the_content()), "noobs-quiz"); ?>
+									</p>
+								<?php endif; ?>
+								<!-- Question Options meta -->
+								<div class="noobs-quiz-options-wrapper">
+									<?php
+									$options_meta = get_post_meta(get_the_ID(), "noobs_quiz_question_options", true);
+									$options = !empty($options_meta) ? $options_meta : [];
+									$uniq = uniqid();
+									foreach ($options as $key => $option) : ?>
+										<div class="noobs-quiz-options">
+											<input name="noobs-quiz-<?php echo esc_attr(get_the_ID()); ?>" type="radio" id="<?php echo esc_attr($uniq . $key); ?>" value="<?php esc_attr_e($option, "noobs-quiz") ?>">
+											<label for="<?php echo esc_attr($uniq . $key); ?>">
+												<?php esc_html_e($option, 'noobs-quiz');  ?>
+											</label>
+										</div>
+									<?php endforeach; ?>
+								</div>
 							</div>
 						<?php endwhile; ?>
-						<button class="noobs-quiz-submit" type="submit">Submit Answer</button>
-					</form> <!-- Form end -->
+					</div>
+					<div class="swiper-button-next">
+						<?php _e("Next", "noobs-quiz") ?>
+					</div>
+					<?php wp_nonce_field("noobs_quiz_question"); ?>
+					<input type="hidden" name="action" value="noobs_quiz_question_form">
+					<button class="noobs-quiz-button-submit" type="submit">
+						<?php _e("Submit", "noobs-quiz"); ?>
+					</button>
+					<div class="swiper-pagination"></div>
 				</div>
-			</div>
+			</form>
 <?php endif;
 	}
 }

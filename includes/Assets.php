@@ -30,7 +30,11 @@ class Assets{
 
 	public function elementor_frontend_assets()
 	{
-		wp_register_script("widget-scripts", NOOBSQUIZ_ASSETS . "js/main.js", ["jquery", "elementor-frontend"], get_post_modified_time(), true);
+		wp_register_script("sweet-alert", "//cdn.jsdelivr.net/npm/sweetalert2@11", [], "1.0", true);
+		wp_register_script("widget-scripts", NOOBSQUIZ_ASSETS . "js/main.js", ["jquery"], get_post_modified_time(), true);
+		wp_localize_script("widget-scripts", "noobsQuizAjax", [
+			'ajax_url' => admin_url("admin-ajax.php")
+		]);
 	}
 
 }

@@ -1,21 +1,77 @@
-*{
+* {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-body{
+body {
 	box-sizing: inherit;
 }
 
+.noobs-quiz {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
 .noobs-quiz-content-title,
-.noobs-quiz-content-desc
-{
+.noobs-quiz-content-desc,
+.noobs-quiz-options.active {
 	transition: all .3s ease-in-out;
 }
 
-.noobs-quiz-options-wrapper{
+.noobs-quiz-options-wrapper {
 	display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-bottom: 10px;
+}
+
+.noobs-quiz .swiper-pagination{
+	position: relative;
+}
+
+.noobs-quiz .noobs-quiz-button-submit{
+	display: none;
+	position: absolute;
+	padding: 2px 10px !important;
+	font-size: 16px;
+}
+
+.noobs-quiz .swiper-button-next, .noobs-quiz .noobs-quiz-button-submit{
+	background-image: none;
+	border: 1px solid #747474;
+	width: fit-content;
+	height: fit-content;
+	padding: 2px 20px;
+	background-color: black;
+	color: #fff;
+	cursor: pointer;
+	top: auto;
+	right: 0;
+	margin-top: -3px;
+	z-index: 99999;
+}
+
+.noobs-quiz .noobs-quiz-username, .noobs-quiz .noobs-quiz-email{
+	display: block;
+}
+
+.noobs-quiz .noobs-quiz-username label, .noobs-quiz .noobs-quiz-email label{
+	font-size: 16px;
+	font-weight: 400;
+	display: block;
+}
+
+.noobs-quiz .noobs-quiz-username input, .noobs-quiz .noobs-quiz-email input{
+	width: 100%;
+	min-height: 30px;
+	border-radius: 50px;
+	padding: 12px 16px;
+	border: 1px solid #c7c7c7;
+}
+
+.noobs-quiz .noobs-quiz-username input:focus-visible, .noobs-quiz .noobs-quiz-email input:focus-visible{
+	border: 1px solid #c7c7c7;
+	outline: none;
 }

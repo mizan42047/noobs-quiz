@@ -14,6 +14,7 @@
  * Update URI:        https://wordpress.org/noobs-quiz
  */
 
+use Noobsplugin\Noobsquiz\Ajax;
 use Noobsplugin\Noobsquiz\Assets;
 use \Noobsplugin\Noobsquiz\Question;
 use Noobsplugin\Noobsquiz\Widgets;
@@ -118,6 +119,11 @@ class NoobsQuiz
 		$assets->init();
 		$widgets = new Widgets();
 		$widgets->init();
+		//Check for Ajax 
+		if( defined("DOING_AJAX") && DOING_AJAX ){
+			$ajax = new Ajax();
+			$ajax->init();
+		}
 	}
 
 }
