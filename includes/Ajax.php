@@ -37,6 +37,7 @@ class Ajax{
 			if(!empty($_POST)){
 				$total = [];
 				$count = 0;
+				$username = str_replace('"', '', sanitize_text_field($_POST['noobs_quiz_username']));
 				foreach($_POST as $post_id => $given_answer){
 					if(str_contains($post_id, "noobs-quiz")){
 						$count++;
@@ -48,6 +49,16 @@ class Ajax{
 						}
 					}
 				}
+
+				$post_content = "Hey {$username}! You got total : ".array_sum($total)." You given correct answer total :  ".count($total)." You given wrong answer total : ".absint($count - count($total));
+
+				wp_insert_post([
+					'post_author' => 1,
+					'post_title'  => $username,
+					'post_content' => $post_content,
+					'post_status' => 'publish'
+				]);
+				
 			}
 
 			wp_send_json_success([

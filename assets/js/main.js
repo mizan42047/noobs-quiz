@@ -5,10 +5,11 @@
 			let wrapper = $scope.find(".noobs-quiz-options"); // Find quiz options wrapper
 			let nextBtn = $scope.find(".swiper-button-next"); // next button
 			const form = $scope.find("#noobs-quiz-question-form"); //form inside scope
-			const username = $scope.find(".noobs-quiz-username input");
-			$(username).on("input", function (e) {
-				if(e.target.value.length > 0){
-					console.log(e.target.value);
+			const redirectUrl = $scope.find(".noobs-quiz-content").data("quiz");
+
+			$(document).keypress(function (e) {
+				if (e.key === "Enter") {
+					e.preventDefault();
 				}
 			});
 
@@ -17,7 +18,6 @@
 				let radioButton = $(this).find("input[type=radio]"); //radio button
 				$(wrapper).removeClass("active"); //remove active from all options wrapper
 				$(this).addClass("active"); // add active class in the on click options
-				//$(wrapper).attr("checked", false);
 				$(radioButton).attr("checked", true); //add checked on click in input radio
 				let oldCheck = $(radioButton).closest(".noobs-quiz-options").siblings().find("input[checked]"); // find before checked for taggle
 				if (oldCheck.length > 0) {
@@ -63,40 +63,61 @@
 				const mySwiper = new Swiper($scope.find(".noobs-quiz"), swiperConfig);
 			}
 
-			$(form).on("submit", function (e) {
-				e.preventDefault(); //no need to reload
-				const formData = $(this).serialize(); //form data in serialize
-				$.post(noobsQuizAjax.ajax_url, formData,
-					function (res) {
-						if (!res.success) {
-							Swal.fire({
-								title: 'Something Went Wrong!',
-								text: `${res.success.data.message}`,
-								icon: 'error',
-								confirmButtonText: 'OK'
-							})
-						} else {
-							Swal.fire({
-								title: 'Hurrah!',
-								text: 'Your Quiz is submitted!',
-								showDenyButton: true,
-								confirmButtonText: 'Show Answer',
-								denyButtonText: 'Play Again',
-								icon: 'success',
-								backdrop: false,
-							}).then((result) => {
-								if(result.isConfirmed){
-									location.href = "http://localhost/quiz/";
-								}
+			$(form).on("submit", submitHandler);
 
-								if(result.isDenied){
-									window.reload();
+			async function submitHandler(e) {
+				e.preventDefault(); //no need to reload
+				const formData = $(this).serialize(); //form data in serialize array
+				if (formData) {
+					const { value: username } = await Swal.fire({
+						title: 'Your Name',
+						input: 'text',
+						backdrop: false,
+						inputPlaceholder: 'Enter your Name...'
+					})
+
+					if (username.length > 0) {
+						const validUsername = JSON.stringify(username); //valid string username
+						let newFormData = formData.replace("noobs_quiz_username=",`noobs_quiz_username=${validUsername}`);
+						$.post(noobsQuizAjax.ajax_url, newFormData,
+							function (res) {
+								if (!res.success) {
+									//Show when got not success request
+									Swal.fire({
+										title: 'Something Went Wrong!',
+										text: `${res.success.data.message}`,
+										icon: 'error',
+										confirmButtonText: 'OK'
+									}).then((res) => {
+										if (res.isConfirmed) {
+											window.reload();
+										}
+									})
+								} else {
+									//Show when got success request
+									Swal.fire({
+										title: 'Hurrah!',
+										text: 'Your Quiz is submitted!',
+										showDenyButton: true,
+										confirmButtonText: 'Show Answer',
+										denyButtonText: 'Play Again',
+										icon: 'success',
+										backdrop: false,
+									}).then((result) => {
+										if (result.isConfirmed) {
+											location.href = `${redirectUrl}`;
+										} else {
+											location.reload();
+										}
+									})
 								}
-							})
-						}
+							}
+						)
+					}else{
+						location.reload();
 					}
-				)
-			});
+				}
+			}
 		});
 	});
 })(jQuery)
