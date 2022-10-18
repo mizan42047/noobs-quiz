@@ -52,36 +52,3 @@ body {
 	margin-top: -3px;
 	z-index: 99;
 }
-
-.noobs-quiz .noobs-quiz-username, .noobs-quiz .noobs-quiz-email{
-	display: block;
-}
-
-.noobs-quiz .noobs-quiz-username label, .noobs-quiz .noobs-quiz-email label{
-	font-size: 16px;
-    font-weight: 400;
-    display: block;
-    margin-left: 10px;
-    line-height: 40px;
-}
-
-.noobs-quiz .noobs-quiz-username input, .noobs-quiz .noobs-quiz-email input{
-	width: 100%;
-	min-height: 30px;
-	border-radius: 50px;
-	padding: 12px 16px;
-	border: 1px solid #c7c7c7;
-}
-
-.noobs-quiz .noobs-quiz-username input:focus-visible, .noobs-quiz .noobs-quiz-email input:focus-visible{
-	border: 1px solid #c7c7c7;
-	outline: none;
-}
-
-.noobs-quiz .swiper-pagination{
-	display: none;
-}
-
-.noobs-quiz .noobs-quiz-email{
-	margin-bottom: 15px;
-}
