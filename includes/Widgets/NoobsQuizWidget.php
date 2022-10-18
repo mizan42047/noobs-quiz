@@ -1044,7 +1044,7 @@ class NoobsQuizWidget extends Widget_Base
 	{
 		$settings = $this->get_settings_for_display();
 		extract($settings);
-
+		
 		$args = [
 			'post_type' => 'question'
 		];
@@ -1081,23 +1081,12 @@ class NoobsQuizWidget extends Widget_Base
 		$args['posts_per_page'] = !empty($noobs_quiz_posts_per_page) ? $noobs_quiz_posts_per_page : -1;
 
 		$query = new WP_Query($args); //query for quertion post type
-		$user_uniqid = uniqid();
-		$email_uniqid = uniqid();
+		$noobs_quiz_answer_page = $noobs_quiz_answer_page ?? home_url();
+
 		if ($query->have_posts()) : ?>
 			<form action="#" method="POST" id="noobs-quiz-question-form">
 				<div class="noobs-quiz swiper">
-					<div class="noobs-quiz-content swiper-wrapper">
-						<div class="swiper-slide noobs-quiz-loop-content">
-							<div class="noobs-quiz-username">
-								<label for="<?php echo esc_attr($user_uniqid); ?>"><?php esc_html_e("Username", "noobs-quiz"); ?></label>
-								<input type="text" id="<?php echo esc_attr($user_uniqid); ?>" name="noobs-quiz-username">
-							</div>
-							<div class="noobs-quiz-email">
-								<label for="<?php echo esc_attr($email_uniqid); ?>"><?php esc_html_e("Email(Optional)", "noobs-quiz"); ?></label>
-								<input type="text" id="<?php echo esc_attr($email_uniqid); ?>" name="noobs-quiz-email">
-							</div>
-						</div>
-						<button type="button" class="form-entry-button"><?php esc_html_e("Form Entry", "noobs-quiz"); ?></button>
+					<div class="noobs-quiz-content swiper-wrapper" data-quiz="<?php echo esc_url($noobs_quiz_answer_page); ?>">
 						<?php
 						while ($query->have_posts()) :
 							$query->the_post(); ?>
@@ -1135,6 +1124,7 @@ class NoobsQuizWidget extends Widget_Base
 					</div>
 					<?php wp_nonce_field("noobs_quiz_question"); ?>
 					<input type="hidden" name="action" value="noobs_quiz_question_form">
+					<input type="hidden" name="noobs_quiz_username" value="">
 					<button class="noobs-quiz-button-submit" type="submit">
 						<?php _e("Submit", "noobs-quiz"); ?>
 					</button>

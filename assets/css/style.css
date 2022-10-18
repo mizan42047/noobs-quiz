@@ -50,7 +50,7 @@ body {
 	top: auto;
 	right: 0;
 	margin-top: -3px;
-	z-index: 99999;
+	z-index: 99;
 }
 
 .noobs-quiz .noobs-quiz-username, .noobs-quiz .noobs-quiz-email{
@@ -59,8 +59,10 @@ body {
 
 .noobs-quiz .noobs-quiz-username label, .noobs-quiz .noobs-quiz-email label{
 	font-size: 16px;
-	font-weight: 400;
-	display: block;
+    font-weight: 400;
+    display: block;
+    margin-left: 10px;
+    line-height: 40px;
 }
 
 .noobs-quiz .noobs-quiz-username input, .noobs-quiz .noobs-quiz-email input{
@@ -74,4 +76,12 @@ body {
 .noobs-quiz .noobs-quiz-username input:focus-visible, .noobs-quiz .noobs-quiz-email input:focus-visible{
 	border: 1px solid #c7c7c7;
 	outline: none;
+}
+
+.noobs-quiz .swiper-pagination{
+	display: none;
+}
+
+.noobs-quiz .noobs-quiz-email{
+	margin-bottom: 15px;
 }
