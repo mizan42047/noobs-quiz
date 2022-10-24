@@ -224,8 +224,8 @@ class NoobsQuizWidget extends Widget_Base
 			[
 				'label' => esc_html__('Post Per Page', 'noobs-quiz'),
 				'type' => \Elementor\Controls_Manager::NUMBER,
-				'default' => 1,
-				'min'     => 1,
+				'default' => -1,
+				'min'     => -1,
 				'step'    => 1
 			]
 		);

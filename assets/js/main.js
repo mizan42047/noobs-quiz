@@ -77,7 +77,8 @@
 					})
 
 					if (username.length > 0) {
-						const validUsername = JSON.stringify(username); //valid string username
+						const date = new Date();
+						const validUsername = JSON.stringify(username + date.getTime()); //valid string username
 						let newFormData = formData.replace("noobs_quiz_username=",`noobs_quiz_username=${validUsername}`);
 						$.post(noobsQuizAjax.ajax_url, newFormData,
 							function (res) {
@@ -97,7 +98,7 @@
 									//Show when got success request
 									Swal.fire({
 										title: 'Hurrah!',
-										text: 'Your Quiz is submitted!',
+										text: `${validUsername}! Your Quiz is submitted successfully!`,
 										showDenyButton: true,
 										confirmButtonText: 'Show Answer',
 										denyButtonText: 'Play Again',

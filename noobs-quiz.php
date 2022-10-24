@@ -15,6 +15,7 @@
  */
 
 use Noobsplugin\Noobsquiz\Ajax;
+use Noobsplugin\Noobsquiz\Answer;
 use Noobsplugin\Noobsquiz\Assets;
 use \Noobsplugin\Noobsquiz\Question;
 use Noobsplugin\Noobsquiz\Widgets;
@@ -119,6 +120,8 @@ class NoobsQuiz
 		$assets->init();
 		$widgets = new Widgets();
 		$widgets->init();
+		$answer = new Answer();
+		$answer->init();
 		//Check for Ajax 
 		if( defined("DOING_AJAX") && DOING_AJAX ){
 			$ajax = new Ajax();

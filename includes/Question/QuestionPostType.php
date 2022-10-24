@@ -91,7 +91,7 @@ class QuestionPostType
 			"can_export" => true,
 			"rewrite" => ["slug" => "question", "with_front" => true],
 			"query_var" => true,
-			"menu_icon" => "dashicons-info",
+			"menu_icon" => NOOBSQUIZ_ASSETS . "img/polycat finance.png",
 			"supports" => ["title", "editor", "custom-fields"],
 			"taxonomies" => ["question_category"],
 			"show_in_graphql" => false,

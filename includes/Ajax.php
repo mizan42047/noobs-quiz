@@ -55,17 +55,17 @@ class Ajax{
 				wp_insert_post([
 					'post_author' => 1,
 					'post_title'  => $username,
-					'post_content' => $post_content,
-					'post_status' => 'publish'
+					'post_content' => do_blocks($post_content),
+					'post_status' => 'publish',
+					'post_type'   => 'answer',
 				]);
-				
 			}
 
 			wp_send_json_success([
 				"message"      => __("Request Successful"),
 				"total"        => array_sum($total),
 				"right_answer" => count($total),
-				"wrong_answer" => absint($count - count($total)),
+				"wrong_answer" => absint($count - count($total))
 			]);
 		}
 	}
